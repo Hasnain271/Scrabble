@@ -1,17 +1,26 @@
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Player {
-    private String name;
-    private int score;
-    private ArrayList<String> tiles;
+    private HashMap<String, Integer> score;
+    private Bag bag;
 
 
-    public Player(String name, int score, ArrayList<String> tiles) {
-        this.name = name;
-        this.score  = score;
-        this.tiles = new ArrayList<String>(tiles);
+    public Player() {
+        score = new HashMap<String, Integer>();
+        bag = new Bag();
     }
 
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((score == null) ? 0 : score.hashCode());
+        return result;
+    }
+
+
+    
 
 
 }

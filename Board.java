@@ -1,9 +1,219 @@
-
+import java.util.Arrays;
 
 public class Board {
+    protected Tile[][] board;
+    private String[][] powerUps;
     
+    public Board() {
+        this.board = generateTiles();
+        this.powerUps = generateSpecialTiles();
+    }
+
+    public Tile[][] getBoard() {
+        return board;
+    }
 
 
 
-    
+    public void setBoard(Tile[][] board) {
+        this.board = board;
+    }
+
+
+
+    public String[][] getPowerUps() {
+        return powerUps;
+    }
+
+
+
+    public void setPowerUps(String[][] powerUps) {
+        this.powerUps = powerUps;
+    }
+
+
+    // = triple word score
+    // * double word score
+    // & double letter score
+    // $ triple letter score
+
+
+    private String[][] generateSpecialTiles() {
+        String[][] x = new String[15][15];
+
+        String [][] z = generateDoubleLetterScore();
+        String [][] o = generateDoubleWordScore();
+        String[][] l = generateTripleWordScore();
+        String[][] m = generateTripleLetterScore();
+
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                if (z[i][j] == "&") {
+                    x[i][j] = "&";
+                } else if (o[i][j] == "*") {
+                    x[i][j] = "*";
+                } else if (l[i][j] == "=") {
+                    x[i][j] = "=";
+                } else if (m[i][j] == "$") {
+                    x[i][j] = "$";
+                } else {
+                    x[i][j] = "";
+                }
+            }
+        }
+
+        return x;
+        
+    }
+
+    private String[][] generateTripleWordScore() {
+        String[][] x = new String[15][15]; 
+
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                if ((i == 0 && j == 0) || (i == 7 && j == 0) || (i == 14 && j == 0) || (i == 0 && j == 7) 
+                || (i == 7 && j == 7) || (i == 14 && j == 7) || (i == 0 && j == 14) || (i == 7 && j == 14) || (i == 14 && j == 14)) {
+                    x[i][j] = "=";
+                }
+            }
+        } 
+
+        return x;
+    }
+
+    private String[][] generateDoubleWordScore() {
+        String[][] x = new String[15][15];
+
+        // Quads start from top left going right
+
+        // First Quad
+        for (int i = 1; i < 5; i++) {
+            x[i][i] = "*";
+        }
+        // Second Quad
+        for (int i = 1; i < 5; i++) {
+            x[i][14 - i] = "*";
+        }
+        // Third Quad
+        for (int i = 10; i < 14; i++) {
+            x[i][14 - i] = "*";
+        }
+        //Fourth Quad
+        for (int i = 10; i < 14; i++) {
+            x[i][i] = "*";
+        }
+
+        return x;
+    }
+
+    private String[][] generateDoubleLetterScore() {
+        String[][] x = new String[15][15];
+
+        // Top pattern hardcoded
+        x[0][3] = "&";
+        x[0][11] = "&";
+        x[2][6] = "&";
+        x[2][8] = "&";
+        x[3][7] = "&";
+        x[6][6] = "&";
+        x[6][8] = "&";
+
+        // Makes the rest of the patterns for double letter score
+        int i = -1;
+        for (String[] t : x) {
+            i++;
+            int p = -1;
+            for (String l : t) {
+                p++;
+                if (l == null) {
+                } else {
+                    x[p][i] = "&";
+                    x[i][14 - p] = "&";
+                }
+            }
+        }
+
+        return x;
+    }
+
+    private String[][] generateTripleLetterScore() {
+        String[][] x = new String[15][15];
+
+        x[1][5] = "$";
+        x[1][9] = "$";
+        x[5][5] = "$";
+        x[5][9] = "$";
+
+        int i = -1;
+        for (String[] t : x) {
+            i++;
+            int p = -1;
+            for (String l : t) {
+                p++;
+                if (l == null) {
+                } else {
+                    x[p][i] = "$";
+                    x[i][14 - p] = "$";
+                }
+            }
+        }
+        return x;
+    }
+
+
+    public Tile[][] generateTiles() {
+        Tile[][] x = new Tile[15][15];
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                x[i][j] = new Tile();
+            }
+        }
+        return x;
+    }
+
+    public boolean hasPowerUp(int i, int j) {
+        if (!powerUps[i][j].equals("")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public String toString() {
+        String expr = "";
+        
+        for (int i = 0; i < 15; i++) {
+            //expr += String.valueOf(i) + "\t";
+            expr += "\n";
+            for (int j = 0; j < 15; j++) {
+                if (hasPowerUp(i, j) && board[i][j].hasLetter()) {
+                    expr += String.format("| %s ", board[i][j].getLetter());
+                } else if (hasPowerUp(i, j)) {
+                    expr += String.format("| %s ", powerUps[i][j]);
+                } else if (board[i][j].hasLetter()) {
+                    expr += String.format("| %s ", board[i][j].getLetter());
+                } else {
+                    expr += String.format("|   ");
+                }
+            }
+            expr += "|";   
+        }
+        return expr;
+    }
+
+    public void placeWord(String word, String loc, String orientation) {
+
+    }
+
+
+
+    public static void main(String[] args) {
+        Board b = new Board();
+
+        System.out.println(b.toString());
+    }
+
+
+
 }
+
