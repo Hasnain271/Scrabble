@@ -1,7 +1,7 @@
-import java.util.Arrays;
+
 
 public class Board {
-    protected Tile[][] board;
+    private Tile[][] board;
     private String[][] powerUps;
     
     public Board() {
@@ -201,16 +201,52 @@ public class Board {
         return expr;
     }
 
-    public void placeWord(String word, String loc, String orientation) {
-
+    public void placeWord(String word, String loc, String orientation) throws NotALocationException, NotAWordException{
+        int row = getRow(loc);
+        int col = getColumn(loc);
+        if ()
+        for (int i = 0; i < word.length(); i++) {
+            Tile x = new Tile(word.substring(i, i + 1));
+            if (orientation.equals("h")) {
+                board[row][col + i] = x;
+            } else if (orientation.equals("v")) {
+                board[row + i][col] = x;
+            }
+        }
     }
 
 
 
-    public static void main(String[] args) {
+    public static int getRow(String loc) throws NotALocationException {
+        Character x = loc.charAt(0);
+        if (loc.substring(0, 1).matches("[A-O]")) {
+            return x - 'a' + 32;
+        } else {
+            throw new NotALocationException();
+        }
+        
+        
+    }
+
+    public static int getColumn(String loc) throws NotALocationException {
+        int x = Integer.valueOf(loc.substring(1));
+        if (x < 15) {
+            return x - 1;
+        } else {
+            throw new NotALocationException();
+        }
+        
+    }
+
+
+
+
+
+
+    public static void main(String[] args) throws NotALocationException {
         Board b = new Board();
 
-        System.out.println(b.toString());
+        System.out.println(getColumn("A1"));
     }
 
 
