@@ -1,6 +1,36 @@
 import java.util.HashMap;
 
-public class LetterPoints {
+public class Letter {
+    Character letter;
+    String score;
+
+
+    public Letter(Character letter, String score) {
+        this.letter = letter;
+        this.score = score;
+    }
+
+    public Character getLetter() {
+        return letter;
+    }
+
+
+
+    public void setLetter(Character letter) {
+        this.letter = letter;
+    }
+
+
+
+    public String getNumber() {
+        return score;
+    }
+
+
+
+    public void setNumber(String number) {
+        this.score = number;
+    }
 
     public static HashMap<String, Integer> generateLetterPoints() {
         HashMap<String, Integer> x = new HashMap<String, Integer>() 
@@ -37,5 +67,12 @@ public class LetterPoints {
         return x;
 
     }
+
+    public String toString() {
+        return getLetter().toString();
+    }
+
+
+
 
 }

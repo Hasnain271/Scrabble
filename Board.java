@@ -72,7 +72,7 @@ public class Board {
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
                 if ((i == 0 && j == 0) || (i == 7 && j == 0) || (i == 14 && j == 0) || (i == 0 && j == 7) 
-                || (i == 7 && j == 7) || (i == 14 && j == 7) || (i == 0 && j == 14) || (i == 7 && j == 14) || (i == 14 && j == 14)) {
+                || (i == 14 && j == 7) || (i == 0 && j == 14) || (i == 7 && j == 14) || (i == 14 && j == 14)) {
                     x[i][j] = "=";
                 }
             }
@@ -102,6 +102,8 @@ public class Board {
         for (int i = 10; i < 14; i++) {
             x[i][i] = "*";
         }
+        
+        x[7][7] = "*";
 
         return x;
     }
@@ -201,10 +203,10 @@ public class Board {
         return expr;
     }
 
-    public void placeWord(String word, String loc, String orientation) throws NotALocationException, NotAWordException{
+    public void placeWord(String word, String loc, String orientation) throws NotALocationException, NotAWordException {
         int row = getRow(loc);
         int col = getColumn(loc);
-        if ()
+
         for (int i = 0; i < word.length(); i++) {
             Tile x = new Tile(word.substring(i, i + 1));
             if (orientation.equals("h")) {
@@ -238,6 +240,47 @@ public class Board {
         
     }
 
+    public boolean isAdj(String word, String loc, String orientation) throws NotALocationException, NotAValidWordPlacement {
+        boolean flag = false;
+
+        int row = getRow(loc);
+        int col = getColumn(loc);
+
+        for (int i = 0; i < word.length(); i++) {
+            if (orientation.equals("v")) {
+                if (col < 15) {
+                    if (board[row][col + 1].hasLetter()) {
+                        flag = true;
+                    }
+                }
+                if (col > 0) {
+                    if (board[row][col - 1].hasLetter()) {
+                        flag = true;
+                    }
+                } 
+                
+            } else if (orientation.equals("h")) {
+                if (row < 15) {
+                    if (board[row + 1][col].hasLetter()) {
+                    flag = true;
+                    }   
+                }
+                if (row > 0) {
+                    if (board[row - 1][col].hasLetter()) {
+                        flag = true;
+                    }
+                } 
+            
+        }
+        }
+
+        if (flag) {
+            return true;
+        } else {
+            throw new NotAValidWordPlacement();
+        }
+    }
+
 
 
 
@@ -246,7 +289,7 @@ public class Board {
     public static void main(String[] args) throws NotALocationException {
         Board b = new Board();
 
-        System.out.println(getColumn("A1"));
+        System.out.println(b.toString());
     }
 
 

@@ -7,7 +7,7 @@ public class Words {
     private ArrayList<String> wordList;
 
     public Words() throws FileNotFoundException {
-        generateWordList();
+        wordList = generateWordList();
     }
 
     public ArrayList<String> getWordlist() {
@@ -23,23 +23,26 @@ public class Words {
         return false;
     }
 
-    public void generateWordList() throws FileNotFoundException { 
+    public ArrayList<String> generateWordList() throws FileNotFoundException {
+        ArrayList<String> x = new ArrayList<String>();
         try {
-            File file = new File("words.txt");
+            File file = new File("/Users/hasnain/Desktop/Scrabble/Scrabble/words.txt");
             Scanner input = new Scanner(file);
             while (input.hasNextLine()) {
-                wordList.add(input.nextLine());
+                x.add(input.nextLine());
             }
             input.close();
         } catch (FileNotFoundException e) {
             System.out.println("File cannot be found!");
         }
-    }   
-
-
+        return x;
+    }  
+    
+    
     public static void main(String[] args) throws FileNotFoundException {
-        Words b = new Words();
-        System.out.println(b.getWordlist().size());
+        Words t = new Words();
+        System.out.println(t.getWordlist().size());
+
     }
 
 }

@@ -2,12 +2,12 @@ import java.util.HashMap;
 
 public class Player {
     private HashMap<String, Integer> score;
-    private Bag bag;
+    private Tile[] rack;
+    static Bag bag;
 
 
     public Player() {
         score = new HashMap<String, Integer>();
-        bag = new Bag();
     }
 
 
@@ -19,7 +19,9 @@ public class Player {
         return result;
     }
 
-
+    public void generateRack() {
+        
+    }
     
 
 
