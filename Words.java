@@ -15,6 +15,8 @@ public class Words {
     }
 
     public boolean validWord(String word) {
+        word = word.toLowerCase();
+
         for (String e : wordList) {
             if (e.equals(word)) {
                 return true;
@@ -22,6 +24,8 @@ public class Words {
         }
         return false;
     }
+
+
 
     public ArrayList<String> generateWordList() throws FileNotFoundException {
         ArrayList<String> x = new ArrayList<String>();

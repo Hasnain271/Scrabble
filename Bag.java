@@ -1,15 +1,19 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+
 
 public class Bag {
 
-    private ArrayList<Letter> Bag;
+    private ArrayList<String> bag;
 
     public Bag() {
-        
+        bag = new ArrayList<String>();
+        generateBag();
+        Collections.shuffle(bag);
     }
 
-    public void generateNumOfTiles() {
+    public HashMap<String, Integer> generateNumOfTiles() {
         HashMap<String, Integer> numOfTiles = new HashMap<String, Integer>() {{
 
             put("A", 9);
@@ -39,10 +43,32 @@ public class Bag {
             put("Y", 2);
             put("Z", 1);
             put("", 2);
-        }};
+        }}; 
         
+        return numOfTiles;
+    }
 
-    
+    public void generateBag() {
+        HashMap<String, Integer> x = generateNumOfTiles();
+        int l = 0;
+        for (Integer t : x.values()) {
+            if (l == 0) {
+                String o = Character.toString((char) 32);
+                bag.add(o);
+                bag.add(o);
+            } else {
+                for (int i = 0; i < t; i++) {
+                    String z = Character.toString((char) (64 + l));
+                    bag.add(z);
+                }
+            }
+            l++;
+        }
+    }
+
+
+    public ArrayList<String> getBag() {
+        return bag;
     }
 
 }

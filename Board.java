@@ -1,3 +1,4 @@
+import java.util.HashMap;
 
 
 public class Board {
@@ -203,15 +204,26 @@ public class Board {
         return expr;
     }
 
-    public void placeWord(String word, String loc, String orientation) throws NotALocationException, NotAWordException {
+    public void placeWord(String word, String loc, String orientation) throws NotALocationException, NotAWordException, NotAValidWordPlacement {
         int row = getRow(loc);
         int col = getColumn(loc);
+        
+        int colLim = col + word.length();
+        int rowLim = row + word.length();
+
+        if (colLim > 14 || rowLim > 14) {
+            throw new NotAValidWordPlacement();
+        }
+
+        word = word.toUpperCase();
+
+        HashMap<String, Integer> o = Tile.generateLetterPoints();
 
         for (int i = 0; i < word.length(); i++) {
-            Tile x = new Tile(word.substring(i, i + 1));
-            if (orientation.equals("h")) {
+            Tile x = new Tile(word.substring(i, i + 1), o.get(word.substring(i, i + 1).toUpperCase()));
+            if (orientation.equals("h") && (col + i) < 15) {
                 board[row][col + i] = x;
-            } else if (orientation.equals("v")) {
+            } else if (orientation.equals("v") && (row + i) < 15) {
                 board[row + i][col] = x;
             }
         }
@@ -232,7 +244,7 @@ public class Board {
 
     public static int getColumn(String loc) throws NotALocationException {
         int x = Integer.valueOf(loc.substring(1));
-        if (x < 15) {
+        if (x < 16) {
             return x - 1;
         } else {
             throw new NotALocationException();
@@ -241,58 +253,106 @@ public class Board {
     }
 
     public boolean isAdj(String word, String loc, String orientation) throws NotALocationException, NotAValidWordPlacement {
-        boolean flag = false;
+
+        int row = getRow(loc);
+        int col = getColumn(loc);
+        
+        int colLim = col + word.length();
+        int rowLim = row + word.length();
+
+        if (colLim > 14 || rowLim > 14) {
+            throw new NotAValidWordPlacement();
+        }
+
+        word = word.toUpperCase();
+        
+        int z = 0;
+        for (int i = 0; i < word.length(); i++) {
+            if (orientation.equals("h")) {
+                
+                if (board[row][col + i].getLetter().equals(word.substring(i, i + 1))) {
+                    z++;
+                }
+            } else if (orientation.equals("v")) {
+                if (board[row + i][col].getLetter().equals(word.substring(i, i + 1))) {
+                    z++;
+                }
+            }
+        }
+
+        if (z < word.length() && z > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // = triple word score
+    // * double word score
+    // & double letter score
+    // $ triple letter score
+
+
+    public int getTotalWordScore(String word, String loc, String orientation) throws NotALocationException {
+        int x = 0;
+        HashMap<String, Integer> t = Tile.generateLetterPoints();
+        word = word.toUpperCase();
+        String o = getScoreMultiplier(word, loc, orientation);
+        for (int i = 0; i < word.length(); i++) {
+            int l = t.get(word.substring(i, i + 1));
+            if (o.substring(i, i + 1).equals("&")) {
+                l *= 2;
+            } else if (o.substring(i, i + 1).equals("$")) {
+                l *= 3;
+            } 
+            x += l;
+        }
+
+        for (int i = 0; i < o.length(); i++) {
+            if (o.substring(i, i + 1).equals("*")) {
+                x *= 2;
+            } else if (o.substring(i, i + 1).equals("=")) {
+                x *= 3;
+            }
+        }
+
+        return x;
+    }
+
+
+    private String getScoreMultiplier(String word, String loc, String orientation) throws NotALocationException {
 
         int row = getRow(loc);
         int col = getColumn(loc);
 
+        String t = "";
+
         for (int i = 0; i < word.length(); i++) {
-            if (orientation.equals("v")) {
-                if (col < 15) {
-                    if (board[row][col + 1].hasLetter()) {
-                        flag = true;
-                    }
+            if (orientation.equals("h")) {
+                if (powerUps[row][col + i].equals("")) {
+                    t += " ";
+                } else {
+                    t += powerUps[row][col + i]; 
                 }
-                if (col > 0) {
-                    if (board[row][col - 1].hasLetter()) {
-                        flag = true;
-                    }
-                } 
                 
-            } else if (orientation.equals("h")) {
-                if (row < 15) {
-                    if (board[row + 1][col].hasLetter()) {
-                    flag = true;
-                    }   
+
+            } else if (orientation.equals("v")) {
+                if (powerUps[row + i][col].equals("")) {
+                    t += " ";
+                } else {
+                    t += powerUps[row + i][col];
                 }
-                if (row > 0) {
-                    if (board[row - 1][col].hasLetter()) {
-                        flag = true;
-                    }
-                } 
-            
-        }
+                
+                
+
+            }
         }
 
-        if (flag) {
-            return true;
-        } else {
-            throw new NotAValidWordPlacement();
-        }
+        return t;
     }
-
-
-
-
-
-
-    public static void main(String[] args) throws NotALocationException {
-        Board b = new Board();
-
-        System.out.println(b.toString());
-    }
-
-
-
 }
 
+    // = triple word score
+    // * double word score
+    // & double letter score
+    // $ triple letter score
