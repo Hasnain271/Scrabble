@@ -9,6 +9,10 @@ public class Tile {
         this.score = score;
     }
 
+    public Tile(String letter) {
+        this.letter = letter;
+    }
+
     public Tile() {
         letter = "";
     }

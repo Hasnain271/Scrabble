@@ -71,4 +71,12 @@ public class Bag {
         return bag;
     }
 
+
+    public boolean isEmpty() {
+        if (bag.size() == 0) {
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -350,6 +350,40 @@ public class Board {
 
         return t;
     }
+
+    public boolean isMiddle(String word, String loc, String orientation) throws NotALocationException, NotAValidWordPlacement {
+        int row = getRow(loc);
+        int col = getColumn(loc);
+
+
+        int colLim = col + word.length();
+        int rowLim = row + word.length();
+
+        if (colLim > 14 || rowLim > 14) {
+            throw new NotAValidWordPlacement();
+        }
+
+        for (int i = 0; i < word.length(); i++) {
+            if (orientation.equals("h")) {
+                if (row == 7 && col + i == 7) {
+                    return true;
+                }
+            } if (orientation.equals("v")) {
+                if (row + i == 7 && col == 7) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+        
+    }
+
+
+    public static void main(String[] args) {
+        Board b = new Board();
+        System.out.println(b.toString());
+    }
 }
 
     // = triple word score

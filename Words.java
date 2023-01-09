@@ -17,6 +17,12 @@ public class Words {
     public boolean validWord(String word) {
         word = word.toLowerCase();
 
+
+        if (word.length() > 7) {
+            return false;
+        }
+
+
         for (String e : wordList) {
             if (e.equals(word)) {
                 return true;
@@ -30,7 +36,7 @@ public class Words {
     public ArrayList<String> generateWordList() throws FileNotFoundException {
         ArrayList<String> x = new ArrayList<String>();
         try {
-            File file = new File("/Users/hasnain/Desktop/Scrabble/Scrabble/words.txt");
+            File file = new File("words.txt");
             Scanner input = new Scanner(file);
             while (input.hasNextLine()) {
                 x.add(input.nextLine());
