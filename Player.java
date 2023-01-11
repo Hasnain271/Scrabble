@@ -1,4 +1,4 @@
-
+import java.util.Collections;
 
 public class Player {
     private int score;
@@ -27,10 +27,59 @@ public class Player {
         this.score += score;
     }
 
-    public void draw(int numOfDraw) {
-        for (int i = 0; i < numOfDraw; i++) {
-            
+    public void draw() {
+        for (int i = 0; i < 7; i++) {
+            if (rack[i].equals("")) {
+                rack[i] = bag.getBag().get(0);
+                bag.getBag().remove(0);
+            }
         }
+    }
+
+    public void removeLetters(String word) {
+        for (int i = 0; i < word.length(); i++) {
+            for (int t = 0; i < 7; t++) {
+                if (rack[t].equals(word.substring(i, i + 1))) {
+                    rack[t] = "";
+                }
+            }
+        }
+    }
+
+    public void swapTiles(String tilesToSwap) {
+        tilesToSwap = tilesToSwap.toUpperCase();
+        for (int i = 0; i < tilesToSwap.length(); i++) {
+            for (int t = 0; t < 7; t++) {
+                if (rack[t].equals(tilesToSwap.substring(i, i + 1))) {
+                    bag.getBag().add(rack[t]);
+                    Collections.shuffle(bag.getBag());
+                    rack[t] = bag.getBag().get(0);
+
+                }
+            }
+        }
+    }
+
+    public boolean canSwap(String tilesToSwap) throws DoNotHaveLettersToSwapException {
+        boolean flag = true;
+        int t = 0;
+        tilesToSwap = tilesToSwap.toUpperCase();
+        for (int i = 0; i < tilesToSwap.length(); i++) {
+            if (!flag) {
+                throw new DoNotHaveLettersToSwapException();
+            }
+            while (t < 7) {
+                if (!rack[t].equals(tilesToSwap.substring(i, i + 1))) {
+                    flag = false;
+                } else {
+                    flag = true;
+                    break;
+                }
+                t++;
+            }
+        }
+
+        return flag;
     }
 
     public String toString() {
@@ -45,7 +94,7 @@ public class Player {
         return expr;
     }
 
-    public boolean hasLettersInRack(String word) {
+    public boolean hasLettersInRack(String word) throws NoLettersInRackException {
         String[] l = rack;
         boolean flag = true;
         int t = 0;
@@ -53,7 +102,7 @@ public class Player {
         for (int i = 0; i < word.length(); i++) {
             t = 0;
             if (!flag) {
-                return false;
+                throw new NoLettersInRackException();
             }
             while (t < 7) {
                 if (!l[t].equals(word.substring(i, i + 1))) {
@@ -68,23 +117,31 @@ public class Player {
             }
 
         }
-
+        if (!flag) {
+            throw new NoLettersInRackException();
+        }
         return flag;
     }
+
+
 
 
     public String getName() {
         return name;
     }
+
+    public int getScore() {
+        return score;
+    }
     
 
-    public static void main(String[] args) throws NotAWordException {
+    public static void main(String[] args) throws NotAWordException, NoLettersInRackException {
         Player t = new Player("azd");
         //System.out.println(bag.getBag().size());
         Player x = new Player("sat");
         //System.out.println(bag.getBag().size());
         System.out.println(t.toString());
-        System.out.println(t.hasLettersInRack("EA"));
+        System.out.println(t.hasLettersInRack("PI"));
 
         
         

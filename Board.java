@@ -204,16 +204,9 @@ public class Board {
         return expr;
     }
 
-    public void placeWord(String word, String loc, String orientation) throws NotALocationException, NotAWordException, NotAValidWordPlacement {
+    public void placeWord(String word, String loc, String orientation) {
         int row = getRow(loc);
         int col = getColumn(loc);
-        
-        int colLim = col + word.length();
-        int rowLim = row + word.length();
-
-        if (colLim > 14 || rowLim > 14) {
-            throw new NotAValidWordPlacement();
-        }
 
         word = word.toUpperCase();
 
@@ -231,38 +224,34 @@ public class Board {
 
 
 
-    public static int getRow(String loc) throws NotALocationException {
+    public static int getRow(String loc) {
         Character x = loc.charAt(0);
-        if (loc.substring(0, 1).matches("[A-O]")) {
-            return x - 'a' + 32;
-        } else {
-            throw new NotALocationException();
-        }
+        return x - 'a' + 32;
+        
         
         
     }
 
-    public static int getColumn(String loc) throws NotALocationException {
+    public static int getColumn(String loc) {
         int x = Integer.valueOf(loc.substring(1));
-        if (x < 16) {
-            return x - 1;
-        } else {
-            throw new NotALocationException();
-        }
+        return x - 1;
         
     }
 
-    public boolean isAdj(String word, String loc, String orientation) throws NotALocationException, NotAValidWordPlacement {
+
+    public boolean validLocation(String loc) throws NotALocationException {
+        int x = Integer.valueOf(loc.substring(1));
+        if (loc.substring(0, 1).matches("[A-O]") && x < 16) {
+            return true;
+        } 
+        throw new NotALocationException();
+    }
+
+    public boolean isAdj(String word, String loc, String orientation) {
 
         int row = getRow(loc);
         int col = getColumn(loc);
-        
-        int colLim = col + word.length();
-        int rowLim = row + word.length();
 
-        if (colLim > 14 || rowLim > 14) {
-            throw new NotAValidWordPlacement();
-        }
 
         word = word.toUpperCase();
         
@@ -293,7 +282,7 @@ public class Board {
     // $ triple letter score
 
 
-    public int getTotalWordScore(String word, String loc, String orientation) throws NotALocationException {
+    public int getTotalWordScore(String word, String loc, String orientation) {
         int x = 0;
         HashMap<String, Integer> t = Tile.generateLetterPoints();
         word = word.toUpperCase();
@@ -320,7 +309,7 @@ public class Board {
     }
 
 
-    private String getScoreMultiplier(String word, String loc, String orientation) throws NotALocationException {
+    private String getScoreMultiplier(String word, String loc, String orientation) {
 
         int row = getRow(loc);
         int col = getColumn(loc);
@@ -351,17 +340,9 @@ public class Board {
         return t;
     }
 
-    public boolean isMiddle(String word, String loc, String orientation) throws NotALocationException, NotAValidWordPlacement {
+    public boolean isMiddle(String word, String loc, String orientation) throws NotAValidWordPlacement, NotInMiddleException {
         int row = getRow(loc);
         int col = getColumn(loc);
-
-
-        int colLim = col + word.length();
-        int rowLim = row + word.length();
-
-        if (colLim > 14 || rowLim > 14) {
-            throw new NotAValidWordPlacement();
-        }
 
         for (int i = 0; i < word.length(); i++) {
             if (orientation.equals("h")) {
@@ -374,15 +355,31 @@ public class Board {
                 }
             }
         }
-        return false;
+        throw new NotInMiddleException();
 
         
     }
 
+    public boolean isValidLimit(String loc, String word) throws NotAValidWordPlacement {
+        int row = getRow(loc);
+        int col = getColumn(loc);
 
-    public static void main(String[] args) {
+
+        int colLim = col + word.length();
+        int rowLim = row + word.length();
+
+        if (colLim > 14 || rowLim > 14) {
+            throw new NotAValidWordPlacement();
+        }
+        return true;
+    }
+
+
+    public static void main(String[] args) throws NotALocationException {
         Board b = new Board();
+        b.placeWord("hello", "H6", "h");
         System.out.println(b.toString());
+        System.out.println(b.validLocation("A3"));
     }
 }
 
