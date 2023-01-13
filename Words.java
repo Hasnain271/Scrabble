@@ -10,10 +10,22 @@ public class Words {
         wordList = generateWordList();
     }
 
+    
+    /** 
+     * Get the word list
+     * @return ArrayList<String>
+     */
     public ArrayList<String> getWordlist() {
         return wordList;
     }
 
+    
+    /** 
+     * Checks if the word is a valid word in words.txt
+     * @param word
+     * @return boolean
+     * @throws NotAWordException
+     */
     public boolean validWord(String word) throws NotAWordException {
         word = word.toLowerCase();
 
@@ -34,10 +46,16 @@ public class Words {
 
 
 
-    public ArrayList<String> generateWordList() throws FileNotFoundException {
+    
+    /** 
+     * Generates the word list 
+     * @return ArrayList<String>
+     * @throws FileNotFoundException
+     */
+    private ArrayList<String> generateWordList() throws FileNotFoundException {
         ArrayList<String> x = new ArrayList<String>();
         try {
-            File file = new File("/Users/hasnain/Desktop/Scrabble/Scrabble/words.txt");
+            File file = new File("words.txt");
             Scanner input = new Scanner(file);
             while (input.hasNextLine()) {
                 x.add(input.nextLine());
@@ -48,12 +66,5 @@ public class Words {
         }
         return x;
     }  
-    
-    
-    public static void main(String[] args) throws FileNotFoundException {
-        Words t = new Words();
-        System.out.println(t.getWordlist().size());
-
-    }
 
 }

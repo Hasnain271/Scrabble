@@ -9,6 +9,7 @@ public class Tile {
         this.score = score;
     }
 
+
     public Tile(String letter) {
         this.letter = letter;
     }
@@ -17,23 +18,48 @@ public class Tile {
         letter = "";
     }
 
+    
+    /** 
+     * Get letter
+     * @return String
+     */
     public String getLetter() {
         return letter;
     }
 
+    
+    /** 
+     * Set letter
+     * @param letter
+     */
     public void setLetter(String letter) {
         this.letter = letter;
     }
 
+    
+    /** 
+     * Get score for tile
+     * @return int
+     */
     public int getScore() {
         return score;
     }
 
+    
+    /** 
+     * Set score for tile
+     * @param score
+     */
     public void setScore(int score) {
         this.score = score;
     }
 
     
+    
+    /** 
+     * Checks if the tile has a letter
+     * @return boolean
+     */
     public boolean hasLetter() {
         if (!this.getLetter().equals("")) {
             return true;
@@ -42,6 +68,11 @@ public class Tile {
         }
     }
 
+    
+    /** 
+     * Points assigned to each letter
+     * @return HashMap<String, Integer>
+     */
     public static HashMap<String, Integer> generateLetterPoints() {
         HashMap<String, Integer> x = new HashMap<String, Integer>() 
         {{
@@ -77,7 +108,5 @@ public class Tile {
         return x;
 
     }
-
-    
 
 }

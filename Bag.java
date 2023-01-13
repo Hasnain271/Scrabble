@@ -13,7 +13,12 @@ public class Bag {
         Collections.shuffle(bag);
     }
 
-    public HashMap<String, Integer> generateNumOfTiles() {
+    
+    /** 
+     * The number of each tile in the bag
+     * @return HashMap<String, Integer>
+     */
+    private HashMap<String, Integer> generateNumOfTiles() {
         HashMap<String, Integer> numOfTiles = new HashMap<String, Integer>() {{
 
             put("A", 9);
@@ -42,36 +47,45 @@ public class Bag {
             put("X", 1);
             put("Y", 2);
             put("Z", 1);
-            put("", 2);
+            //put(" ", 2);
         }}; 
         
         return numOfTiles;
     }
 
+
+    /**
+     * Generates the bag
+     */
     public void generateBag() {
         HashMap<String, Integer> x = generateNumOfTiles();
-        int l = 0;
+        int l = 1;
         for (Integer t : x.values()) {
-            if (l == 0) {
-                String o = Character.toString((char) 32);
-                bag.add(o);
-                bag.add(o);
-            } else {
-                for (int i = 0; i < t; i++) {
-                    String z = Character.toString((char) (64 + l));
-                    bag.add(z);
-                }
+            for (int i = 0; i < t; i++) {
+                String z = Character.toString((char) (64 + l));
+                bag.add(z);
             }
             l++;
         }
+            
     }
 
 
+    
+    /** 
+     * Get the bag
+     * @return ArrayList<String>
+     */
     public ArrayList<String> getBag() {
         return bag;
     }
 
 
+    
+    /** 
+     * Checks if bag is empty
+     * @return boolean
+     */
     public boolean isEmpty() {
         if (bag.size() == 0) {
             return true;
