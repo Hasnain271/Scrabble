@@ -178,14 +178,14 @@ public class Scrabble {
                 players[t].hasLettersInRack(word, location, orientation, b);
                 b.isAdj(word, location, orientation);
                 }
-            b.placeWord(word, location, orientation);
-            players[t].draw();
 
             if ((!b.isTilesOnBoard() && word.length() == 7) || (b.isTilesOnBoard() && rackLen == 7)) {
                 players[t].addScore(b.getTotalWordScore(word, location, orientation) + 50);
             } else {
                 players[t].addScore(b.getTotalWordScore(word, location, orientation));
             }
+            b.placeWord(word, location, orientation);
+            players[t].draw();
             break;
         
             }
