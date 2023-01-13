@@ -1,4 +1,6 @@
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Scrabble {
@@ -6,6 +8,42 @@ public class Scrabble {
     private static Scanner input = new Scanner(System.in);
 
 
+
+    public Player[] drawForOrder(Player[] players) {
+        int[] l = new int[players.length];
+        int i = 0;
+        for (Player x : players) {
+            System.out.println(x.getName() + " draws: " + Player.bag.getBag().get(0));
+            Character ch = Player.bag.getBag().get(0).charAt(0);
+            l[i] = ch;
+            Collections.shuffle(Player.bag.getBag());
+            i++;
+        }
+
+        
+        int closestIndex = 0;
+        int diff = 2093423904;
+
+        for (int t = 0; t < l.length; t++) {
+            if (l[t] < diff) {
+                closestIndex = t;
+                diff = l[t];
+            }
+        }
+        Player[] playerCopy = Arrays.copyOf(players, players.length);
+        
+
+        for (int z = 0; z < players.length; z++) {
+            if (z == closestIndex) {
+                players[0] = players[closestIndex];
+                players[z] = playerCopy[0];
+            }
+        }
+
+
+        return players;
+
+    }
 
     
     /** 
@@ -162,7 +200,7 @@ public class Scrabble {
          * @param t
          * @throws DoNotHaveLettersToSwapException
          */
-        public void swapTiles(Player[] players, Board b, int t) throws DoNotHaveLettersToSwapException  {
+        public void swapTiles(Player[] players, Board b, int t) throws DoNotHaveLettersToSwapException, NotEnoughTilesInBagException  {
             String lettersToSwap = "";
             
 
@@ -171,11 +209,11 @@ public class Scrabble {
                 System.out.println("Enter the letters you want to swap! (Ex. ABUI)");
                 lettersToSwap = input.nextLine();
                     
-                if (Player.bag.getBag().size() < 7) {
+                if (Player.bag.getBag().size() > 7) {
                 players[t].canSwap(lettersToSwap);
                 players[t].swapTiles(lettersToSwap);
                 } else {
-                    System.out.println("Not enough tiles in the bag!");
+                    throw new NotEnoughTilesInBagException();
                 }
                 break;
             
@@ -201,6 +239,8 @@ public class Scrabble {
         int playerTurn = 0;
         int passCounter = 0;
         int exchangeCounter = 0;
+
+        players = s.drawForOrder(players);
 
         while (true) {
 

@@ -93,7 +93,7 @@ public class Leaderboard {
             FileWriter writer = new FileWriter(file);
 
             for (Player x : rankings) {
-                writer.write(x.getName() + ": " + x.getScore());
+                writer.write(x.getName() + ": " + x.getScore() + "\n");
             }
             writer.close();
         } catch (Exception e) {
